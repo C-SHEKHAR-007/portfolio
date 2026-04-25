@@ -1349,5 +1349,233 @@ window.addEventListener('load', () => {
   }
 });
 </script>
+<!-- ============================================================
+     PORTFOLIO THEME SWITCHER
+============================================================ -->
+
+<!-- Toggle Button -->
+<button id="theme-toggle-btn" aria-label="Switch portfolio theme" onclick="toggleThemeSwitcher()">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+  </svg>
+  <span>Themes</span>
+</button>
+
+<!-- Switcher Panel -->
+<div id="theme-panel" aria-hidden="true">
+  <div id="theme-panel-header">
+    <span>Portfolio Variants</span>
+    <button id="theme-close-btn" onclick="toggleThemeSwitcher()" aria-label="Close">✕</button>
+  </div>
+
+  <a href="../index.html" class="theme-card" id="card-glass">
+    <div class="theme-card-icon">✦</div>
+    <div class="theme-card-info">
+      <strong>Glassmorphism</strong>
+      <span>Dark glass · Parallax blobs</span>
+    </div>
+  </a>
+
+  <a href="portfolio-cinematic.html" class="theme-card active-theme" id="card-cinematic">
+    <div class="theme-card-icon">▶</div>
+    <div class="theme-card-info">
+      <strong>Cinematic</strong>
+      <span>Film noir · Scroll theatre · Current</span>
+    </div>
+    <div class="theme-card-badge">Live</div>
+  </a>
+
+  <a href="portfolio-minimalist.html" class="theme-card" id="card-minimalist">
+    <div class="theme-card-icon">◈</div>
+    <div class="theme-card-info">
+      <strong>Minimalist</strong>
+      <span>Clean · Minimal · Professional</span>
+    </div>
+  </a>
+
+  <a href="../terminal_look_portfolio/v7.html" class="theme-card" id="card-terminal">
+    <div class="theme-card-icon">⌨</div>
+    <div class="theme-card-info">
+      <strong>Terminal</strong>
+      <span>Hacker · Monospace · CLI-style</span>
+    </div>
+  </a>
+</div>
+
+<!-- Backdrop -->
+<div id="theme-backdrop" onclick="toggleThemeSwitcher()"></div>
+
+<style>
+  /* Cinematic-specific: lift button above the letterbox + timeline */
+  #theme-toggle-btn {
+    position: fixed;
+    bottom: calc(var(--lb-b, 110px) + 18px);
+    right: 28px;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 999px;
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  }
+  #theme-toggle-btn:hover {
+    background: rgba(255,255,255,0.14);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  #theme-toggle-btn:active { transform: translateY(0); }
+
+  #theme-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9997;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  #theme-backdrop.open { display: block; opacity: 1; }
+
+  #theme-panel {
+    position: fixed;
+    bottom: calc(var(--lb-b, 110px) + 74px);
+    right: 28px;
+    z-index: 9999;
+    width: 300px;
+    background: rgba(15,15,25,0.92);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 6px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+    transform: translateY(12px) scale(0.97);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  #theme-panel.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0) scale(1);
+  }
+
+  #theme-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px 8px;
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  #theme-close-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.35);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 2px 4px;
+    transition: color 0.15s;
+  }
+  #theme-close-btn:hover { color: #fff; }
+
+  .theme-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    text-decoration: none;
+    color: rgba(255,255,255,0.75);
+    transition: background 0.18s ease, color 0.18s ease;
+    position: relative;
+  }
+  .theme-card:hover {
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+  }
+  .theme-card.active-theme {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+  }
+  .theme-card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  #card-glass .theme-card-icon      { background: rgba(99,179,237,0.12);  border-color: rgba(99,179,237,0.25); }
+  #card-cinematic .theme-card-icon  { background: rgba(240,136,62,0.12);  border-color: rgba(240,136,62,0.3);  color: #f0883e; }
+  #card-minimalist .theme-card-icon { background: rgba(154,230,180,0.12); border-color: rgba(154,230,180,0.25); }
+  #card-terminal .theme-card-icon   { background: rgba(72,187,120,0.15);  border-color: rgba(72,187,120,0.3);  color: #68d391; }
+
+  .theme-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+  .theme-card-info strong { font-size: 14px; font-weight: 600; color: inherit; }
+  .theme-card-info span   { font-size: 11px; color: rgba(255,255,255,0.38); }
+
+  .theme-card-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(240,136,62,0.15);
+    border: 1px solid rgba(240,136,62,0.35);
+    color: #f0883e;
+  }
+
+  @media (max-width: 640px) {
+    #theme-toggle-btn { bottom: calc(var(--lb-b, 96px) + 14px); right: 16px; }
+    #theme-panel { right: 12px; width: calc(100vw - 24px); bottom: calc(var(--lb-b, 96px) + 70px); }
+  }
+</style>
+
+<script>
+  function toggleThemeSwitcher() {
+    const panel    = document.getElementById('theme-panel');
+    const backdrop = document.getElementById('theme-backdrop');
+    const isOpen   = panel.classList.contains('open');
+    panel.classList.toggle('open', !isOpen);
+    backdrop.classList.toggle('open', !isOpen);
+    panel.setAttribute('aria-hidden', String(isOpen));
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('theme-panel').classList.remove('open');
+      document.getElementById('theme-backdrop').classList.remove('open');
+    }
+  });
+</script>
+
 </body>
 </html>
