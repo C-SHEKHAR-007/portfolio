@@ -219,21 +219,33 @@
 			}
 
 			.hero-tag {
-				font-size: 12px;
-				letter-spacing: 0.2em;
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				font-size: 11px;
+				letter-spacing: 0.18em;
 				text-transform: uppercase;
 				color: var(--accent);
-				margin-bottom: 24px;
-				display: flex;
-				align-items: center;
-				gap: 12px;
+				margin-bottom: 32px;
+				background: rgba(232, 93, 64, 0.07);
+				border: 1px solid rgba(232, 93, 64, 0.25);
+				border-radius: 999px;
+				padding: 7px 18px 7px 12px;
 			}
 
 			.hero-tag::before {
 				content: "";
-				width: 40px;
-				height: 1px;
+				width: 7px;
+				height: 7px;
+				border-radius: 50%;
 				background: var(--accent);
+				flex-shrink: 0;
+				animation: pulse-dot 1.8s ease infinite;
+			}
+
+			@keyframes pulse-dot {
+				0%, 100% { opacity: 1; transform: scale(1); }
+				50% { opacity: 0.3; transform: scale(0.7); }
 			}
 
 			.hero-name {
@@ -439,35 +451,40 @@
 			}
 
 			.stats-grid {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 32px;
+				display: flex;
+				flex-direction: column;
+				border-left: 2px solid var(--border);
+				align-self: flex-start;
+				padding-top: 8px;
 			}
 
 			.stat {
-				padding: 32px;
-				border: 1px solid var(--border);
-				background: var(--bg);
-				transition: all 0.3s ease;
+				padding: 24px 32px;
+				background: transparent;
+				border: none;
+				border-left: 3px solid transparent;
+				margin-left: -2px;
+				transition: border-color 0.3s ease, transform 0.3s ease;
 			}
 
 			.stat:hover {
-				border-color: var(--accent);
-				transform: translateY(-4px);
+				border-left-color: var(--accent);
+				transform: translateX(8px);
 			}
 
 			.stat-value {
 				font-family: "Playfair Display", serif;
-				font-size: 48px;
+				font-size: 44px;
 				color: var(--text);
-				margin-bottom: 8px;
+				margin-bottom: 4px;
+				line-height: 1;
 			}
 
 			.stat-label {
-				font-size: 13px;
+				font-size: 11px;
 				color: var(--text-muted);
 				text-transform: uppercase;
-				letter-spacing: 0.1em;
+				letter-spacing: 0.12em;
 			}
 
 			/* SKILLS */
@@ -502,33 +519,39 @@
 
 			.skill-list {
 				list-style: none;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px;
+				margin-top: 4px;
 			}
 
 			.skill-list li {
-				font-size: 15px;
+				font-size: 12px;
 				color: var(--text-secondary);
-				padding: 8px 0;
-				border-bottom: 1px solid var(--border);
-				transition: all 0.3s ease;
+				padding: 5px 13px;
+				border: 1px solid var(--border-dark);
+				background: var(--bg);
+				border-radius: 2px;
 				cursor: default;
+				transition: all 0.2s ease;
+				letter-spacing: 0.02em;
 			}
 
 			.skill-list li:hover {
 				color: var(--text);
-				padding-left: 12px;
-				border-bottom-color: var(--accent);
+				border-color: var(--accent);
+				background: rgba(232, 93, 64, 0.05);
 			}
 
 			.skill-list li.featured {
 				color: var(--text);
 				font-weight: 500;
+				background: var(--surface);
+				border-color: var(--border-dark);
 			}
 
 			.skill-list li.featured::before {
-				content: "★";
-				color: var(--accent);
-				margin-right: 8px;
-				font-size: 10px;
+				display: none;
 			}
 
 			/* EXPERIENCE */
@@ -538,6 +561,7 @@
 
 			.exp-list {
 				max-width: 800px;
+				padding-left: 32px;
 			}
 
 			.exp-item {
@@ -660,17 +684,38 @@
 				transition: all 0.4s ease;
 			}
 
+			.project-card {
+				position: relative;
+				overflow: hidden;
+			}
+
+			.project-card::after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 100%;
+				height: 2px;
+				background: var(--accent);
+				transition: right 0.4s ease;
+			}
+
+			.project-card:hover::after {
+				right: 0;
+			}
+
 			.project-card:hover {
 				border-color: var(--accent);
 				transform: translateY(-8px);
-				box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+				box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08);
 			}
 
 			.project-num {
 				font-family: "JetBrains Mono", monospace;
 				font-size: 12px;
-				color: var(--text-muted);
+				color: var(--accent);
 				margin-bottom: 24px;
+				opacity: 0.7;
 			}
 
 			.project-title {
@@ -831,6 +876,86 @@
 				color: rgba(255, 255, 255, 0.4);
 			}
 
+			/* Hero background ghost text */
+			.hero-bg-text {
+				position: absolute;
+				right: 5vw;
+				top: 50%;
+				transform: translateY(-50%);
+				font-family: "Playfair Display", serif;
+				font-size: clamp(80px, 12vw, 160px);
+				font-weight: 700;
+				color: transparent;
+				-webkit-text-stroke: 1.5px rgba(26, 26, 26, 0.055);
+				letter-spacing: -0.02em;
+				line-height: 1;
+				user-select: none;
+				pointer-events: none;
+				white-space: nowrap;
+				z-index: 0;
+			}
+
+			.hero-content {
+				position: relative;
+				z-index: 1;
+			}
+
+			/* Subtle dot grid on hero */
+			#hero {
+				background-image: radial-gradient(circle, rgba(0,0,0,0.045) 1px, transparent 1px);
+				background-size: 28px 28px;
+			}
+
+			/* Experience timeline left line */
+			.exp-list {
+				position: relative;
+			}
+
+			.exp-item {
+				position: relative;
+			}
+
+			.exp-item::before {
+				content: "";
+				position: absolute;
+				left: -28px;
+				top: 54px;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				border: 2px solid var(--border-dark);
+				background: var(--bg-alt);
+				transition: border-color 0.3s ease, background 0.3s ease;
+			}
+
+			.exp-item:hover::before {
+				border-color: var(--accent);
+				background: var(--accent);
+			}
+
+			.exp-list::before {
+				content: "";
+				position: absolute;
+				left: -24px;
+				top: 0;
+				bottom: 0;
+				width: 1px;
+				background: var(--border);
+			}
+
+			/* Resume / outline button */
+			.btn-outline {
+				background: transparent;
+				color: var(--text-secondary);
+				border: 1px solid var(--border-dark);
+			}
+
+			.btn-outline:hover {
+				color: var(--text);
+				border-color: var(--text);
+				transform: translateY(-2px);
+			}
+
 			/* Animations */
 			.fade-in {
 				opacity: 0;
@@ -948,8 +1073,10 @@
 				<div class="hero-cta">
 					<a href="#contact" class="btn btn-primary">Get in touch →</a>
 					<a href="#projects" class="btn btn-secondary">View work</a>
+					<a href="#" class="btn btn-outline" id="resume-btn" title="Download Resume">↓ Resume</a>
 				</div>
 			</div>
+			<div class="hero-bg-text" aria-hidden="true">Engineer</div>
 			<div class="hero-scroll">
 				<div class="line"></div>
 				<span>Scroll to explore</span>
@@ -1426,24 +1553,24 @@
      align-items: center;
      gap: 8px;
      padding: 10px 18px;
-     background: rgba(255,255,255,0.08);
-     backdrop-filter: blur(16px);
-     -webkit-backdrop-filter: blur(16px);
-     border: 1px solid rgba(255,255,255,0.15);
+     background: #1a1a1a;
+     backdrop-filter: none;
+     border: 1px solid #1a1a1a;
      border-radius: 999px;
-     color: #fff;
+     color: #fafaf8;
      font-family: inherit;
      font-size: 13px;
      font-weight: 500;
      letter-spacing: 0.03em;
      cursor: pointer;
-     box-shadow: 0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
-     transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+     box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+     transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
    }
    #theme-toggle-btn:hover {
-     background: rgba(255,255,255,0.14);
+     background: #e85d40;
+     border-color: #e85d40;
      transform: translateY(-2px);
-     box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+     box-shadow: 0 8px 24px rgba(232,93,64,0.3);
    }
    #theme-toggle-btn:active { transform: translateY(0); }
 
